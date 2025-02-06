@@ -1,6 +1,6 @@
 # Optimal-Best-Arm-Identification-in-Bandits-with-Post-Action-Context
 
-This repository offers an implementation for best arm identification in bandits with post action contexts for two settings and several algorithms for each setting. 
+This repository includes the official codes for ["Best Arm Identification with Post-Action Contexts"] (https://arxiv.org/abs/2502.03061) paper and the instructions on how to run it. 
 
 ---
 
@@ -21,8 +21,10 @@ Finally, our empirical results showcase the advantage of our approaches compared
   - `Environments.py`: Defines the simulation environments for the Seperator and Non-Seperator problems.
   - `Instance_json.py`: Handles loading of problem instances from JSON files.
   - `output_json.py`: Manages the storage of results into JSON files.
-  - `Algorithms1.py`: Implements the NSTS and TS algorithms for the Non-Seperator environment. Each Algorithm is implemented with a class. Each class has a Stopping Rule method and D_Tracking Method. For D_Tracking, an optimization oracle is needed which is implemented via binary search using scipy.
-  - `Algorithms2.py`: Implements the STS, TS, LTS and STS_C_Tracking algorithms for the Seperator environment. Each Algorithm is implemented with a class.(Except for STS and STS_C_Tracking which are implement in the same class) Each class has a Stopping Rule method and one or several Tracking Methods. For G_Tracking, an optimization oracle is needed which requires convex programming which is implemented using CVXPY.
+  - `Algorithms1.py`: Implements the non-separator track and stop (NSTS) and classic track and stop (TS) algorithms for the Non-Seperator environment. Each Algorithm is implemented with a class. Each class has a Stopping Rule method and D_Tracking rule for sampling. For D_Tracking, an optimization oracle is needed which is implemented via binary search using scipy.
+  - `Algorithms2.py`: Implements theseparator track and stop (STS), classic track and stop (TS), ND lazy track and stop (LTS) algorithms for the Seperator environment. Each Algorithm is implemented with a class. Each class has a Stopping Rule method and one a Tracking Method. For G_Tracking rule used in STS, an optimization oracle is needed which requires convex programming which is implemented using CVXPY.
+ 
+For more details about the algorithms, refer to the paper.
 
 ---
 
@@ -34,12 +36,11 @@ The script is used to test the Non Seperator algorithms. Below are the arguments
 
 - `--Algorithm` (default: `NSTS`): Specify the algorithm to use. Choices are `NSTS` and `TS`.
 - `--instance_index` (default: 0): Index of the problem instance to load from `instances1.json`. Choices are 0 to 8.
-- `--theoretical_stopping_rule` (default: 0): Use theoretical stopping rule (1 for True, 0 for False).
 - `--store` (default: 1): Doesn't save the results if 0 and Save results to a JSON file otherwise. 
 
 **Example**:
 ```bash
-python main1.py --Algorithm "NSTS" --instance_index 1 --theoretical_stopping_rule 1 --store 0
+python main1.py --Algorithm "NSTS" --instance_index 1 --store 0
 ```
 
 ### Running `main2.py`
@@ -48,14 +49,10 @@ The script is used to test the Seperator algorithms. Below are the arguments you
 - `--Algorithm` (default: `STS`): Specify the algorithm to use. Choices are `STS`, `LTS`, `TSS` and `STS_C_Tracking`.
 - `--instance_index` (default: 0): Index of the problem instance to load from `instances2.json`. Choices are 0 to 9.
 - `--store` (default: 1): Doesn't save the results if 0 and Save results to a JSON file otherwise. 
-- `--use_optimized_p` (default: 0): Use the p that gets you closer to the best estimated context point in STS (1 for True, 0 for False).
-- `--average_points_played` (default: 0): Use the average context point approach in STS (1 for True, 0 for False).
-- `--average_w` (default: 0): Use the averaged context weight approach in STS (1 for True, 0 for False).
-- `--c_stopping_rule` (default: 0): Use the `c_stopping_rule` (1 for True, 0 for False).
 
 **Example**:
 ```bash
-python main2.py --Algorithm 'STS' --instance_index 2 --use_optimized_p 1 --c_stopping_rule 1 --store 0
+python main2.py --Algorithm 'STS' --instance_index 2 --store 0
 ```
 
 ---
