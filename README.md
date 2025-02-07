@@ -1,6 +1,6 @@
-# Optimal-Best-Arm-Identification-in-Bandits-with-Post-Action-Context
+# Optimal Best Arm Identification with Post-Action Context
 
-This repository includes the official codes for ["Best Arm Identification with Post-Action Contexts"] (https://arxiv.org/abs/2502.03061) paper and the instructions on how to run it. 
+This repository includes the official codes for ["Best Arm Identification with Post-Action Contexts"](https://arxiv.org/abs/2502.03061) paper and the instructions on how to run it. 
 
 ---
 
