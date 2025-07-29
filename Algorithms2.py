@@ -74,27 +74,6 @@ class STS:
         c_t = c_hat_t(self.n, 1 , self.T, self.delta)
 
         return c_t >= lambda_hat_t
-
-
-
-
-#     def Stopping_Rule(self): #check the confidence equation again
-        
-#         best_arm, _, delta_hat = self.best_empirical_arm_calculator()
-        
-#         V = - self.contexts + self.contexts[best_arm]
-        
-#         confidence = np.sqrt(2*(self.k * Cg(np.log((self.n - 1) / self.delta)/self.k) + np.sum (2 * np.log(4 + np.log(self.K_times_seen)))) * np.sum(V ** 2 / self.K_times_seen, axis = 1))
-        
-# #         print(confidence)
-# #         print(SecondMin(delta_hat - confidence))
-        
-        
-#         return SecondMin(delta_hat - confidence) < 0
-#     #changed
-
-
-    
     
     
     def C_Stopping_Rule(self): 
@@ -111,10 +90,6 @@ class STS:
         return SecondMin(delta_hat - confidence) < 0
 
 
-
-
-
-    
     
     def optimization_line_coefficient(self, w_t, v_k): 
 
@@ -151,8 +126,6 @@ class STS:
             return result.x[-1]  #alpha
         else:
             self.optimization_failed_flag = True
-            #raise ValueError("Optimization failed: " + result.message)
-
             
     
     def optimization_for_Z_optimal_vector(self):
@@ -440,10 +413,6 @@ class STS:
 
 
     def G_Tracking(self):
-        #no need for exploration!
-#         if int(self.T**0.5) ** 2 == self.T:
-#             return hidden_action_sampler(self.exploration_vector)
-        
         w, _ = self.Optimal_W()
         result = self.T * w - self.N_times_seen
         return np.argmax(result)
@@ -461,11 +430,7 @@ class STS:
             self.K_times_seen[j] += 1
             self.sum_of_rewards[j] += samples[self.T] + means[j] #sample according to x ~ N(u, 1) === x = y + u , u ~ N(0, 1)
             self.T += 1
-#             self.sum_ws += self.contexts[i]
             self.sum_points_played += self.contexts[i]
-
-#         if self.context_estimate == True:
-#             self.contexts = self.N_times_seen / self.N_times_seen.sum(axis=1, keepdims=True)
 
         return self.T
         
@@ -729,20 +694,6 @@ class LTS: #code of https://github.com/jedray/LT-S adapted to our environment
 
 
     def Stopping_Rule(self):
-        #logging.debug('Started stopping rule')
-        # theoretical threshold
-#         temp = np.sqrt( np.linalg.det(((1 / (self.u*self.c1)) * self.A) + np.eye(self.k)));
-#         beta_t = self.c2 * np.log(temp/ self.delta)
-#         # heuristic threshold
-#         #beta_t = self.c2 * (np.log(1/self.delta)+ 0.5*np.log(t) + 0.5*self.d*np.log(1/self.u + 1))
-#         Z_t = self.__Z()
-        
-# #         if (np.min(np.linalg.eigvals(self.A)) > np.max(np.sum(self.contexts**2, axis=1)) ):
-# #             print(self.T)
-
-#         return (Z_t <= beta_t) or (self.T < self.k)# or (np.min(np.linalg.eigvals(self.A)) < np.max(np.sum(self.contexts**2, axis=1)) )
-        
-    
         lambda_hat_t = self.lambda_hat()
 
         c_t = c_hat_t(self.n, 1 , self.T, self.delta)
@@ -763,13 +714,6 @@ class LTS: #code of https://github.com/jedray/LT-S adapted to our environment
         result = self.N_times_seen * best_arm_times_pulled / (self.N_times_seen + best_arm_times_pulled)
 
         result = result * (delta_hat**2) / 2
-        
-        
-#         if self.T %10000 == 0:
-            
-#             print("the best arm identified by the problem is ", best_arm)
-#             print("delta hat is", delta_hat)
-#             print("mu hats are ", _)
 
         #since we have 0 in the i*-th element and that should not be computed in arg min
         return SecondMin(result)
@@ -862,13 +806,7 @@ class LTS: #code of https://github.com/jedray/LT-S adapted to our environment
 
             design += design_update
 
-#             if count % 100 == 0:
-#                 logging.debug('design status %s, %s, %s, %s' %
-#                               (self.seed, count, relative, np.max(rho)))
-
             if relative < 0.01:
-#                 logging.debug('design status %s, %s, %s, %s' %
-#                               (self.seed, count, relative, np.max(rho)))
                 break
 
         idx_fix = np.where(design < 1e-5)[0]
